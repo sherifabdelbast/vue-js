@@ -1,0 +1,277 @@
+* {
+    /*outline: 1px solid limegreen !important;*/
+}
+
+.ptb {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.landing-hero-bg {
+    background-color: #13263c;
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #12ce5d 0%, #ffd80c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.page-background {
+    width: 100%;
+    height: 100vh;
+    background-image: url("/assets/media/email/background2.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* General */
+.truncate {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+img {
+    object-fit: cover;
+}
+
+/* Team */
+.symbol.symbol-40px > img {
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: cover;
+}
+
+/* Table Style */
+tbody tr:hover {
+    background: #fafafa;
+    transition: background-color 0.2s;
+}
+
+.table.gy-5 td {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+/* Drop Down */
+.no-select {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.select-menu-members .select-btn,
+.select-menu-status .select-btn,
+.select-menu .selected,
+.custom-time-view {
+    display: flex;
+    height: 42px !important;
+    background: transparent !important;
+    padding: 15px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 3px;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.select-btn i {
+    transition: 0.3s;
+}
+
+.select-menu-members .options,
+.select-menu-status .options {
+    position: relative;
+    width: 100%;
+    row-gap: 8px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1;
+}
+
+.select-menu-status .options {
+    max-height: 180px;
+    overflow-x: auto;
+}
+
+.select-menu-members .options {
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+.members-list.active,
+.statuses-list.active,
+.issueType-menu.active {
+    display: flex;
+    z-index: 100;
+}
+
+.box-hover.active {
+    background: var(--bs-dark-light) !important;
+}
+
+.box-hover {
+    background: var(--bs-dark-light) !important;
+}
+
+.options .option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.selected .option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.options .option:hover {
+    background: #f2f2f2;
+    transition: 0.4s all;
+}
+
+.option i {
+    font-size: 25px;
+}
+
+.option .option-text,
+.option i {
+    font-size: 12px;
+}
+
+.issue-info:last-child .select-menu-members .options,
+.issue-info:last-child .select-menu-status .options {
+    bottom: 90%;
+}
+
+.custom-round {
+    border-radius: 3px !important;
+}
+
+.custom-round-left {
+    border-top-left-radius: 3px !important;
+    border-bottom-left-radius: 3px !important;
+}
+
+.custom-round-right {
+    border-top-right-radius: 3px !important;
+    border-bottom-right-radius: 3px !important;
+}
+
+.custom-round-top {
+    border-top-right-radius: 3px !important;
+    border-top-left-radius: 3px !important;
+}
+
+.custom-shadow {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.img-width {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.selected-active-issue {
+    background-color: var(--bs-success-light) !important;
+    border-left: 2px solid blue !important;
+}
+
+.active-issue-board {
+    background-color: var(--bs-success-light) !important;
+    border: 1px solid blue !important;
+}
+
+.Vue-Toastification__container {
+    z-index: 10000 !important;
+}
+
+/* Gallery */
+.gallery {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+.gallery .file-container .image-container {
+    display: contents !important;
+    width: 100%;
+}
+
+.file-container {
+    width: calc((100% / 4) - 15px) !important;
+}
+
+.file-container .image-container img,
+.overlay-style,
+.gallery-img {
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: cover;
+}
+
+.outside-description {
+    background-color: transparent !important;
+    color: var(--bs-dark) !important;
+    padding: 10px !important;
+}
+
+.p-tieredmenu .p-menuitem-active > .p-submenu-list{
+    right: 100% !important;
+    left: -100% !important;
+}
+
+.issueType-style {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
+}
+
+/* Media Query */
+
+@media (max-width: 868px) {
+    .custom-table-style {
+        overflow-x: scroll;
+    }
+
+    .custom-table-style > table {
+        min-width: max-content;
+    }
+
+    .custom-table-style::-webkit-scrollbar {
+        height: 5px;
+        background-color: transparent;
+    }
+
+    .custom-table-style::-webkit-scrollbar-thumb {
+        background-color: var(--bs-text-gray-300);
+        border-radius: 5px;
+    }
+}
