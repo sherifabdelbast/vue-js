@@ -253,5 +253,6 @@ export const useAuth = () => {
     checkToken,
     checkForgotPasswordCode,
     resetPassword,
+    fetchCurrentUser, // Export fetchCurrentUser
   };
 };
