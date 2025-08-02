@@ -114,59 +114,55 @@ export const useAuth = () => {
 
   const complete = async (credentials) => {
     try {
-      await getCsrfToken();
-      const formData = new FormData();
-      // Add fields dynamically, matching backend field names
-      if (credentials.identify_number) {
-        formData.append("identify_number", String(credentials.identify_number));
-      }
-      if (credentials.name) {
-        formData.append("name", String(credentials.name).trim());
-      }
-      if (credentials.password) {
-        formData.append("password", String(credentials.password));
-      }
-      if (credentials.password_confirmation) {
-        formData.append(
-          "password_confirmation",
-          String(credentials.password_confirmation)
-        );
-      }
-      if (credentials.photo instanceof File) {
-        formData.append("photo", credentials.photo);
-      }
-
-      const response = await $larafetch(`${backendUrl}/register-complete`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
-        credentials: "include",
-        mode: "cors",
-      });
-      useCookie("auth_token").value = response.token;
-      await refresh();
-      return response;
-    } catch (error) {
-      // Avoid double-reading response body
-      let errorBody = null;
-      if (error.response?.status === 422) {
-        try {
-          errorBody = await error.response.json();
-          console.error("Validation errors:", errorBody);
-        } catch (e) {
-          console.error("Failed to parse error body:", e);
+        await getCsrfToken();
+        const formData = new FormData();
+        if (credentials.identify_number) {
+            formData.append('identify_number', String(credentials.identify_number));
         }
-      }
-      console.error("Complete error:", error);
-      throw new Error(
-        errorBody
-          ? `Validation failed: ${JSON.stringify(errorBody.errors)}`
-          : "Registration failed"
-      );
+        if (credentials.name) {
+            formData.append('name', String(credentials.name).trim());
+        }
+        if (credentials.password) {
+            formData.append('password', String(credentials.password));
+        }
+        if (credentials.password_confirmation) {
+            formData.append('password_confirmation', String(credentials.password_confirmation));
+        }
+        if (credentials.photo instanceof File) {
+            formData.append('photo', credentials.photo);
+        }
+
+        // Log FormData contents for debugging
+        for (const [key, value] of formData.entries()) {
+            console.log(`FormData: ${key}=${value}`);
+        }
+
+        const response = await $larafetch(`${backendUrl}/register-complete`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+            },
+            body: formData,
+            credentials: "include",
+            mode: "cors",
+        });
+        useCookie("auth_token").value = response.token;
+        await refresh();
+        return response;
+    } catch (error) {
+        let errorBody = null;
+        if (error.response?.status === 422) {
+            try {
+                errorBody = await error.response.json();
+                console.error("Validation errors:", errorBody);
+            } catch (e) {
+                console.error("Failed to parse error body:", e);
+            }
+        }
+        console.error("Complete error:", error);
+        throw new Error(errorBody ? JSON.stringify(errorBody) : 'Registration failed');
     }
-  };
+};
 
   const checkToken = async (credentials) => {
     try {
