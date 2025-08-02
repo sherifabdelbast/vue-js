@@ -113,24 +113,25 @@ export const useAuth = () => {
   };
 
   const complete = async (credentials) => {
-    // Ensure credentials has valid data
-    
-
     try {
       await getCsrfToken();
       const formData = new FormData();
-      // Add identify_number if provided
+      // Add fields dynamically, matching backend field names
       if (credentials.identify_number) {
-        formData.append("identify_number", credentials.identify_number);
+        formData.append("identify_number", String(credentials.identify_number));
       }
-      // Add required fields
-      formData.append("name", credentials.name); // e.g., "John Doe"
-      formData.append("password", credentials.password); // "hello1503"
-      formData.append(
-        "password_confirmation",
-        credentials.password_confirmation
-      ); // "hello1503"
-      // Add photo if provided (must be a File object)
+      if (credentials.name) {
+        formData.append("name", String(credentials.name).trim());
+      }
+      if (credentials.password) {
+        formData.append("password", String(credentials.password));
+      }
+      if (credentials.password_confirmation) {
+        formData.append(
+          "password_confirmation",
+          String(credentials.password_confirmation)
+        );
+      }
       if (credentials.photo instanceof File) {
         formData.append("photo", credentials.photo);
       }
@@ -139,7 +140,6 @@ export const useAuth = () => {
         method: "POST",
         headers: {
           Accept: "application/json",
-          // No Content-Type header; browser sets multipart/form-data automatically
         },
         body: formData,
         credentials: "include",
@@ -149,15 +149,22 @@ export const useAuth = () => {
       await refresh();
       return response;
     } catch (error) {
-      console.error("Complete error:", error);
-      if (error.response) {
-        const errorBody = await error.response.json();
-        console.error("Validation errors:", errorBody);
-        throw new Error(
-          `Validation failed: ${JSON.stringify(errorBody.errors)}`
-        );
+      // Avoid double-reading response body
+      let errorBody = null;
+      if (error.response?.status === 422) {
+        try {
+          errorBody = await error.response.json();
+          console.error("Validation errors:", errorBody);
+        } catch (e) {
+          console.error("Failed to parse error body:", e);
+        }
       }
-      throw error;
+      console.error("Complete error:", error);
+      throw new Error(
+        errorBody
+          ? `Validation failed: ${JSON.stringify(errorBody.errors)}`
+          : "Registration failed"
+      );
     }
   };
 
