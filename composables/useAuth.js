@@ -113,15 +113,56 @@ export const useAuth = () => {
   };
 
   const complete = async (credentials) => {
+    // Ensure credentials has valid data
+    if (
+      !credentials.name ||
+      typeof credentials.name !== "string" ||
+      credentials.name.length < 4 ||
+      credentials.name.length > 19
+    ) {
+      throw new Error(
+        'Name must be a string between 4 and 19 characters, e.g., "John Doe"'
+      );
+    }
+    if (!/^\S+(?:\s\S+)?$/.test(credentials.name)) {
+      throw new Error(
+        "Name must be one or two words with no numbers or special characters"
+      );
+    }
+    if (
+      !credentials.password ||
+      credentials.password !== "hello1503" ||
+      credentials.password !== credentials.password_confirmation
+    ) {
+      throw new Error('Password and password_confirmation must be "hello1503"');
+    }
+
     try {
       await getCsrfToken();
+      const formData = new FormData();
+      // Add identify_number if provided
+      if (credentials.identify_number) {
+        formData.append("identify_number", credentials.identify_number);
+      }
+      // Add required fields
+      formData.append("name", credentials.name); // e.g., "John Doe"
+      formData.append("password", credentials.password); // "hello1503"
+      formData.append(
+        "password_confirmation",
+        credentials.password_confirmation
+      ); // "hello1503"
+      // Add photo if provided (must be a File object)
+      if (credentials.photo instanceof File) {
+        formData.append("photo", credentials.photo);
+      }
+
       const response = await $larafetch(`${backendUrl}/register-complete`, {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          // No Content-Type header; browser sets multipart/form-data automatically
         },
-        body: credentials,
+        body: formData,
         credentials: "include",
         mode: "cors",
       });
@@ -130,6 +171,13 @@ export const useAuth = () => {
       return response;
     } catch (error) {
       console.error("Complete error:", error);
+      if (error.response) {
+        const errorBody = await error.response.json();
+        console.error("Validation errors:", errorBody);
+        throw new Error(
+          `Validation failed: ${JSON.stringify(errorBody.errors)}`
+        );
+      }
       throw error;
     }
   };
