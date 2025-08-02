@@ -114,28 +114,7 @@ export const useAuth = () => {
 
   const complete = async (credentials) => {
     // Ensure credentials has valid data
-    if (
-      !credentials.name ||
-      typeof credentials.name !== "string" ||
-      credentials.name.length < 4 ||
-      credentials.name.length > 19
-    ) {
-      throw new Error(
-        'Name must be a string between 4 and 19 characters, e.g., "John Doe"'
-      );
-    }
-    if (!/^\S+(?:\s\S+)?$/.test(credentials.name)) {
-      throw new Error(
-        "Name must be one or two words with no numbers or special characters"
-      );
-    }
-    if (
-      !credentials.password ||
-      credentials.password !== "hello1503" ||
-      credentials.password !== credentials.password_confirmation
-    ) {
-      throw new Error('Password and password_confirmation must be "hello1503"');
-    }
+    
 
     try {
       await getCsrfToken();
